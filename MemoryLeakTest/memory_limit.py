@@ -26,7 +26,7 @@ while subprocess.poll() is None:
 
     #fullUsage = (usage.uss / (1024*1024)) + ( usage.swap /(1024* 1024))
    
-    print("Used MEMORY: "+str(usage))
+    #print("Used MEMORY: "+str(usage))
     if usage > memory_limit:
        
         # Kill the subprocess
