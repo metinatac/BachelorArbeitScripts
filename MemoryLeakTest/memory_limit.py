@@ -14,6 +14,8 @@ if len(sys.argv) != 3:
 file_to_check = sys.argv[1]
 memory_limit = int(sys.argv[2])
 
+initalMemotySize = 0 
+
 # Run the file to check
 subprocess = subprocess.Popen(['python', file_to_check])
 pid_sub = subprocess.pid
@@ -23,13 +25,16 @@ print("PROCCESS ID of the LeakChecker: "+str(pid_checker))
 # Check memory usage every 0.1 seconds
 while subprocess.poll() is None:
     usage = psutil.Process(pid_sub).memory_info().vms / (1024 * 1024)
-
+    
+    if initalMemotySize == 0:
+        initalMemotySize = usage
     #fullUsage = (usage.uss / (1024*1024)) + ( usage.swap /(1024* 1024))
    
-    #print("Used MEMORY: "+str(usage))
+    usage = usage-initalMemotySize
+    print("Used MEMORY: "+str(usage))
     if usage > memory_limit:
        
         # Kill the subprocess
         os.kill(pid_sub, signal.SIGKILL)
         break
-    time.sleep(0.1)
+    time.sleep(5.0)
